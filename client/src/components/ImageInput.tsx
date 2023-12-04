@@ -6,7 +6,7 @@ import { DataFromAzure } from "../interfaces/interfaces";
 
 const ApiKey = import.meta.env.VITE_API_KEY;
 const AzureEndpoint = import.meta.env.VITE_API_ENDPOINT;
-const backendUrl = import.meta.env.VITE_BACKEND_IMAGE_ENDPOINT;
+const backendUrl = import.meta.env.VITE_PATH_BACKEND_IMAGE;
 interface Props {
   setCarsFromDB: (value: Car[]) => void;
   setCarTags: (value: Tags) => void;
@@ -25,16 +25,22 @@ const ImageInput = (props: Props) => {
   // Fetch key tags from AI API.
   async function getImageData(e: { preventDefault: () => void }) {
     e.preventDefault();
+    console.log(image);
 
     props.setLoading(true);
     if (image) {
       try {
-        const response = await axios.post(AzureEndpoint, image[0], {
-          headers: {
-            "Content-Type": "application/octet-stream",
-            "Ocp-Apim-Subscription-Key": ApiKey,
-          },
-        });
+        const response = await axios.post(
+          AzureEndpoint +
+            "computervision/imageanalysis:analyze?api-version=2023-02-01-preview&features=tags&language=en&gender-neutral-caption=False",
+          image[0],
+          {
+            headers: {
+              "Content-Type": "application/octet-stream",
+              "Ocp-Apim-Subscription-Key": ApiKey,
+            },
+          }
+        );
 
         console.log(response.data.tagsResult.values);
         const data = response.data.tagsResult.values;
@@ -46,20 +52,27 @@ const ImageInput = (props: Props) => {
   }
   // Fetch data from backend and update state with data
   const fetchFromBackend = async () => {
-    const responseBackend: AxiosResponse = await axios.post(
-      backendUrl,
-      dataFromApi,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    console.log("Fetching data from backend");
+    try {
+      console.log(backendUrl);
+      const responseBackend: AxiosResponse = await axios.post(
+        backendUrl,
+        dataFromApi,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    props.setCarsFromDB(responseBackend.data.result);
-    props.setCarTags(responseBackend.data.tags);
-    console.log(responseBackend.data);
-    props.setLoading(false);
+      props.setCarsFromDB(responseBackend.data.result);
+      props.setCarTags(responseBackend.data.tags);
+      console.log(responseBackend.data);
+      props.setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data from backend:", error);
+      props.setLoading(false);
+    }
   };
   // Fetch data from backend when dataFromApi state changes and is not empty
   useEffect(() => {

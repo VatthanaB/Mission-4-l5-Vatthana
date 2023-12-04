@@ -52,7 +52,7 @@ Turner's Car Company Image Recognition Application is a web application that uti
 4. Create a `.env` file in the `backend` folder and set the following environment variables:
 
    ```env
-   PORT=5000
+
    MONGODB_URI=mongodb://localhost:27017/Mission-Ready-M4(if using seeding or your DB name)
    AZURE_COMPUTER_VISION_KEY=your_azure_computer_vision_key
    AZURE_COMPUTER_VISION_ENDPOINT=your_azure_computer_vision_endpoint
@@ -101,8 +101,8 @@ Turner's Car Company Image Recognition Application is a web application that uti
    ```env
    VITE_API_KEY=your_azure_computer_vision_key
    VITE_API_ENDPOINT=your_azure_computer_vision_endpoint
-   VITE_PATH_BACKEND_IMAGE="http://localhost:5000/analyzeImage"
-   VITE_PATH_BACKEND_="http://localhost:5000/analyze"
+   VITE_PATH_BACKEND_IMAGE="http://localhost:8080/analyzeImage"
+   VITE_PATH_BACKEND_="http://localhost:8080/analyze"
    ```
 
 4. Run the frontend development server:
@@ -176,7 +176,8 @@ Clean all data from the MongoDB collection.
 Example:
 
 ```bash
-node ./cli/cli.js clean
+Are you sure you want to clean the database? (Y/N)
+
 ```
 
 #### Retrieve Entry by ID
@@ -190,7 +191,9 @@ Retrieve an entry from the MongoDB database by ID.
 Example:
 
 ```bash
-node ./cli/cli.js retrieve
+Please enter the entry ID: 656d28e72b8c240dfd4b0068
+
+
 ```
 
 #### Update Car Price
@@ -204,7 +207,9 @@ Update the price of a car in the MongoDB database by ID.
 Example:
 
 ```bash
-node ./cli/cli.js update-price
+Please enter the entry ID: 656d28e72b8c240dfd4b0068
+Please enter the new price: 28000
+
 ```
 
 #### Add New Car
@@ -218,9 +223,12 @@ Add a new car to the MongoDB database.
 Example:
 
 ```bash
-node ./cli/cli.js add-car
-```
+Please enter the car image URL: https://example.com/car-image.jpg
+Please enter the car brand: Toyota
+Please enter the car color: Blue
+Please enter the car price: 25000
+Please enter the car type: Sedan
 
-### Important Note
+```
 
 Make sure to have your MongoDB server running on `localhost:27017` and the specified database ("Mission-Ready-M4") and collection ("cars") available before using the CLI.
