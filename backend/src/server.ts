@@ -210,6 +210,16 @@ app.post("/azure", async (req, res) => {
     console.error("Error:", error.response);
   }
 });
+
+app.get("/cars", async (req, res) => {
+  try {
+    const cars = await CarModel.find();
+    res.status(200).json(cars);
+  } catch (error) {
+    console.error("Error getting cars:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // mongo connection and server start
 mongoose
   .connect(mangoURL, {

@@ -64,7 +64,29 @@ const ImageInput = (props: Props) => {
           },
         }
       );
-
+      // Update the state with the response from backend Capitalize first letter of each tag
+      const tags: Tags = responseBackend.data.tags;
+      if (tags.colorTags !== undefined) {
+        tags.colorTags =
+          tags.colorTags.charAt(0).toUpperCase() + tags.colorTags.slice(1);
+      }
+      if (tags.carBrandTag !== undefined) {
+        tags.carBrandTag =
+          tags.carBrandTag.charAt(0).toUpperCase() + tags.carBrandTag.slice(1);
+      }
+      if (tags.carTypeTag !== undefined) {
+        tags.carTypeTag =
+          tags.carTypeTag.charAt(0).toUpperCase() + tags.carTypeTag.slice(1);
+      }
+      if (tags.carTypeTag === undefined) {
+        tags.carTypeTag = "No car type found";
+      }
+      if (tags.carBrandTag === undefined) {
+        tags.carBrandTag = "No car brand found";
+      }
+      if (tags.colorTags === undefined) {
+        tags.colorTags = "No color found";
+      }
       props.setCarsFromDB(responseBackend.data.result);
       props.setCarTags(responseBackend.data.tags);
       console.log(responseBackend.data);

@@ -10,7 +10,7 @@ program
 
 // command to import the data from the JSON file to the database./cli.js clean myDatabase myCollection
 program
-  .command("import <jsonFilePath>")
+  .command("import <jsonFilePath> <databaseName> <collectionName>")
   .description("Import data from JSON file to MongoDB database")
   .action(async (jsonFilePath) => {
     try {
